@@ -2,8 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import type { RowDataPacket } from "mysql2/promise";
-import { db } from "@/lib/db";
+import { exec, transaction } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
 import { slugify } from "@/lib/format";
 import { saveUpload } from "@/lib/storage";
@@ -55,52 +54,47 @@ export async function saveProduct(_prev: ProductState, form: FormData): Promise<
   const flags = [form.get("is_active") === "on" ? 1 : 0, form.get("is_featured") === "on" ? 1 : 0, form.get("is_new") === "on" ? 1 : 0];
   const description = String(form.get("description") ?? "").trim().slice(0, 4000) || null;
 
-  const conn = await db().getConnection();
   let pid = id;
   try {
-    await conn.beginTransaction();
-    if (id) {
-      await conn.query(
-        "UPDATE products SET name=?, description=?, price=?, compare_price=?, category_id=?, is_active=?, is_featured=?, is_new=? WHERE id=?",
-        [name, description, price, compare, catId, ...flags, id],
-      );
-    } else {
-      let slug = slugify(name);
-      const [ex] = await conn.query<RowDataPacket[]>("SELECT 1 FROM products WHERE slug = ?", [slug]);
-      if (ex.length) slug += "-" + Math.random().toString(36).slice(2, 6);
-      const [r] = await conn.query(
-        "INSERT INTO products (slug,name,description,price,compare_price,category_id,is_active,is_featured,is_new) VALUES (?,?,?,?,?,?,?,?,?)",
-        [slug, name, description, price, compare, catId, ...flags],
-      );
-      pid = (r as { insertId: number }).insertId;
-    }
+    pid = await transaction(async (tx) => {
+      let productId = id;
+      if (id) {
+        await tx.exec(
+          "UPDATE products SET name=?, description=?, price=?, compare_price=?, category_id=?, is_active=?, is_featured=?, is_new=? WHERE id=?",
+          [name, description, price, compare, catId, ...flags, id],
+        );
+      } else {
+        let slug = slugify(name);
+        if ((await tx.rows("SELECT 1 FROM products WHERE slug = ?", [slug])).length) slug += "-" + Math.random().toString(36).slice(2, 6);
+        productId = await tx.insert(
+          "INSERT INTO products (slug,name,description,price,compare_price,category_id,is_active,is_featured,is_new) VALUES (?,?,?,?,?,?,?,?,?)",
+          [slug, name, description, price, compare, catId, ...flags],
+        );
+      }
 
-    // variants: update existing, insert new, delete removed
-    const keep = variants.filter((v) => v.id).map((v) => v.id!);
-    if (id) {
-      if (keep.length) await conn.query("DELETE FROM product_variants WHERE product_id=? AND id NOT IN (?)", [pid, keep]);
-      else await conn.query("DELETE FROM product_variants WHERE product_id=?", [pid]);
-    }
-    for (const v of variants) {
-      if (v.id)
-        await conn.query("UPDATE product_variants SET size=?, color=?, color_hex=?, stock=? WHERE id=? AND product_id=?", [v.size, v.color, v.color_hex, v.stock, v.id, pid]);
-      else await conn.query("INSERT INTO product_variants (product_id,size,color,color_hex,stock) VALUES (?,?,?,?,?)", [pid, v.size, v.color, v.color_hex, v.stock]);
-    }
+      // variants: update existing, insert new, delete removed
+      const keep = variants.filter((v) => v.id).map((v) => v.id!);
+      if (id) {
+        if (keep.length) await tx.exec("DELETE FROM product_variants WHERE product_id=? AND id NOT IN (?)", [productId, keep]);
+        else await tx.exec("DELETE FROM product_variants WHERE product_id=?", [productId]);
+      }
+      for (const v of variants) {
+        if (v.id)
+          await tx.exec("UPDATE product_variants SET size=?, color=?, color_hex=?, stock=? WHERE id=? AND product_id=?", [v.size, v.color, v.color_hex, v.stock, v.id, productId]);
+        else await tx.exec("INSERT INTO product_variants (product_id,size,color,color_hex,stock) VALUES (?,?,?,?,?)", [productId, v.size, v.color, v.color_hex, v.stock]);
+      }
 
-    const remove = form.getAll("remove_image").map(Number).filter(Boolean);
-    if (remove.length) await conn.query("DELETE FROM product_images WHERE product_id=? AND id IN (?)", [pid, remove]);
-    if (urls.length) {
-      const [[m]] = await conn.query<RowDataPacket[][]>("SELECT COALESCE(MAX(sort),0) m FROM product_images WHERE product_id=?", [pid]);
-      let sort = Number((m as unknown as { m: number }).m);
-      for (const u of urls) await conn.query("INSERT INTO product_images (product_id,url,sort) VALUES (?,?,?)", [pid, u, ++sort]);
-    }
-    await conn.commit();
+      const remove = form.getAll("remove_image").map(Number).filter(Boolean);
+      if (remove.length) await tx.exec("DELETE FROM product_images WHERE product_id=? AND id IN (?)", [productId, remove]);
+      if (urls.length) {
+        let sort = Number((await tx.rows<{ m: number }>("SELECT COALESCE(MAX(sort),0) m FROM product_images WHERE product_id=?", [productId]))[0].m);
+        for (const u of urls) await tx.exec("INSERT INTO product_images (product_id,url,sort) VALUES (?,?,?)", [productId, u, ++sort]);
+      }
+      return productId;
+    });
   } catch (e) {
-    await conn.rollback();
     console.error("saveProduct failed", e);
     return { error: "Could not save (a size/colour combination may be duplicated)." };
-  } finally {
-    conn.release();
   }
   revalidatePath("/", "layout");
   redirect("/admin/products");
@@ -108,7 +102,7 @@ export async function saveProduct(_prev: ProductState, form: FormData): Promise<
 
 export async function deleteProduct(form: FormData) {
   await requireAdmin();
-  await db().query("DELETE FROM products WHERE id = ?", [Number(form.get("id"))]);
+  await exec("DELETE FROM products WHERE id = ?", [Number(form.get("id"))]);
   revalidatePath("/", "layout");
   redirect("/admin/products");
 }

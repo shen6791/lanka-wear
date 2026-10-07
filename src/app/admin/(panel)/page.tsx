@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { rows, one } from "@/lib/db";
+import { rows, one, TODAY_SQL, THIS_MONTH_SQL } from "@/lib/db";
 import { lkr, STATUS_LABEL } from "@/lib/format";
 
 export default async function Dashboard() {
   const [today, month, pending, lowStock, recent] = await Promise.all([
-    one<{ n: number; t: number }>("SELECT COUNT(*) n, COALESCE(SUM(total),0) t FROM orders WHERE DATE(created_at)=CURDATE() AND status<>'cancelled'"),
-    one<{ n: number; t: number }>("SELECT COUNT(*) n, COALESCE(SUM(total),0) t FROM orders WHERE created_at >= DATE_FORMAT(NOW(),'%Y-%m-01') AND status<>'cancelled'"),
+    one<{ n: number; t: number }>(`SELECT COUNT(*) n, COALESCE(SUM(total),0) t FROM orders WHERE ${TODAY_SQL} AND status<>'cancelled'`),
+    one<{ n: number; t: number }>(`SELECT COUNT(*) n, COALESCE(SUM(total),0) t FROM orders WHERE ${THIS_MONTH_SQL} AND status<>'cancelled'`),
     one<{ n: number }>("SELECT COUNT(*) n FROM orders WHERE status='pending'"),
     rows<{ name: string; size: string; color: string; stock: number; id: number }>(
       "SELECT p.id, p.name, v.size, v.color, v.stock FROM product_variants v JOIN products p ON p.id=v.product_id WHERE p.is_active=1 AND v.stock<=3 ORDER BY v.stock, p.name LIMIT 8",

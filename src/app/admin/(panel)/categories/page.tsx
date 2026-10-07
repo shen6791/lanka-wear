@@ -1,5 +1,5 @@
 import { revalidatePath } from "next/cache";
-import { db, rows } from "@/lib/db";
+import { exec, insertCategory, rows } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
 import { slugify } from "@/lib/format";
 
@@ -8,13 +8,13 @@ async function add(form: FormData) {
   await requireAdmin();
   const name = String(form.get("name") ?? "").trim().slice(0, 120);
   if (!name) return;
-  await db().query("INSERT IGNORE INTO categories (slug, name, sort) VALUES (?, ?, ?)", [slugify(name), name, Number(form.get("sort")) || 0]);
+  await insertCategory(slugify(name), name, Number(form.get("sort")) || 0);
   revalidatePath("/", "layout");
 }
 async function del(form: FormData) {
   "use server";
   await requireAdmin();
-  await db().query("DELETE FROM categories WHERE id = ?", [Number(form.get("id"))]);
+  await exec("DELETE FROM categories WHERE id = ?", [Number(form.get("id"))]);
   revalidatePath("/", "layout");
 }
 

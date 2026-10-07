@@ -1,5 +1,5 @@
 import { revalidatePath } from "next/cache";
-import { db } from "@/lib/db";
+import { upsertSetting } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
 import { getSettings, type Settings } from "@/lib/data";
 
@@ -16,7 +16,7 @@ async function save(form: FormData) {
   const keys = GROUPS.flatMap((g) => g.fields.map((f) => f[0]));
   for (const k of keys) {
     const v = String(form.get(k) ?? "").trim().slice(0, 500);
-    await db().query("INSERT INTO settings (k, v) VALUES (?, ?) ON DUPLICATE KEY UPDATE v = VALUES(v)", [k, v]);
+    await upsertSetting(k, v);
   }
   revalidatePath("/", "layout");
 }

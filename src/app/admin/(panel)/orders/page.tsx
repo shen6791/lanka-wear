@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { rows } from "@/lib/db";
+import { LIKE, rows } from "@/lib/db";
 import { lkr, STATUS_LABEL } from "@/lib/format";
 
 const TABS = ["all", "pending", "confirmed", "shipped", "delivered", "cancelled"];
@@ -16,7 +16,7 @@ export default async function Orders({ searchParams }: { searchParams: Promise<{
   const where: string[] = [];
   const params: unknown[] = [];
   if (sp.status && TABS.includes(sp.status) && sp.status !== "all") { where.push("status = ?"); params.push(sp.status); }
-  if (sp.q) { where.push("(order_no LIKE ? OR customer_name LIKE ? OR phone LIKE ?)"); params.push(`%${sp.q}%`, `%${sp.q}%`, `%${sp.q}%`); }
+  if (sp.q) { where.push(`(order_no ${LIKE} ? OR customer_name ${LIKE} ? OR phone ${LIKE} ?)`); params.push(`%${sp.q}%`, `%${sp.q}%`, `%${sp.q}%`); }
   const list = await rows<{ id: number; order_no: string; customer_name: string; phone: string; district: string; total: number; status: string; payment_method: string; payment_status: string; created_at: Date }>(
     `SELECT id, order_no, customer_name, phone, district, total, status, payment_method, payment_status, created_at FROM orders ${where.length ? "WHERE " + where.join(" AND ") : ""} ORDER BY id DESC LIMIT 200`,
     params,

@@ -1,5 +1,5 @@
 import { cache } from "react";
-import { rows, one } from "./db";
+import { rows, one, LIKE } from "./db";
 
 export type Settings = {
   brand_name: string;
@@ -96,7 +96,7 @@ export async function listProducts(opts: {
     params.push(opts.category);
   }
   if (opts.q) {
-    where.push("(p.name LIKE ? OR p.description LIKE ?)");
+    where.push(`(p.name ${LIKE} ? OR p.description ${LIKE} ?)`);
     params.push(`%${opts.q}%`, `%${opts.q}%`);
   }
   if (opts.featured) where.push("p.is_featured = 1");

@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { db, one, rows } from "@/lib/db";
+import { exec, one, rows, restockOrder, unrestockOrder } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
 import { lkr, STATUS_LABEL } from "@/lib/format";
-import { restock } from "@/lib/orders";
 
 type Order = {
   id: number; order_no: string; customer_name: string; phone: string; email: string | null; address: string; city: string; district: string;
@@ -22,10 +21,10 @@ async function update(form: FormData) {
   if (!["pending", "confirmed", "shipped", "delivered", "cancelled"].includes(status)) return;
   const cur = await one<{ status: string }>("SELECT status FROM orders WHERE id = ?", [id]);
   if (!cur) return;
-  await db().query("UPDATE orders SET status=?, payment_status=?, tracking_note=? WHERE id=?", [status, paid, note, id]);
-  if (status === "cancelled" && cur.status !== "cancelled") await restock(id);
+  await exec("UPDATE orders SET status=?, payment_status=?, tracking_note=? WHERE id=?", [status, paid, note, id]);
+  if (status === "cancelled" && cur.status !== "cancelled") await restockOrder(id);
   if (cur.status === "cancelled" && status !== "cancelled")
-    await db().query("UPDATE product_variants v JOIN order_items i ON i.variant_id=v.id SET v.stock=GREATEST(0, v.stock-i.qty) WHERE i.order_id=?", [id]);
+    await unrestockOrder(id);
   revalidatePath(`/admin/orders/${id}`);
   revalidatePath("/admin/orders");
 }

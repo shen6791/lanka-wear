@@ -1,5 +1,4 @@
-import type { PoolConnection, RowDataPacket } from "mysql2/promise";
-import { db } from "./db";
+import { transaction } from "./db";
 import { COLOMBO_AREA } from "./format";
 import type { Settings } from "./data";
 
@@ -38,11 +37,9 @@ export async function createOrder(lines: CartLine[], input: OrderInput, settings
   }
   if (merged.size === 0 || merged.size > 40) throw new OrderError("Your cart is empty.");
 
-  const conn: PoolConnection = await db().getConnection();
-  try {
-    await conn.beginTransaction();
+  return transaction(async (tx) => {
     const ids = [...merged.keys()];
-    const [vr] = await conn.query<RowDataPacket[]>(
+    const vr = await tx.rows<{ id: number; product_id: number; size: string; color: string; stock: number; name: string; price: number; is_active: number }>(
       `SELECT v.id, v.product_id, v.size, v.color, v.stock, p.name, p.price, p.is_active
        FROM product_variants v JOIN products p ON p.id = v.product_id
        WHERE v.id IN (?) FOR UPDATE`,
@@ -63,38 +60,22 @@ export async function createOrder(lines: CartLine[], input: OrderInput, settings
 
     let no = orderNo();
     for (let i = 0; i < 5; i++) {
-      const [ex] = await conn.query<RowDataPacket[]>("SELECT 1 FROM orders WHERE order_no = ?", [no]);
-      if (!ex.length) break;
+      if (!(await tx.rows("SELECT 1 FROM orders WHERE order_no = ?", [no])).length) break;
       no = orderNo();
     }
-    const [res] = await conn.query(
+    const orderId = await tx.insert(
       `INSERT INTO orders (order_no, customer_name, phone, email, address, city, district, notes, payment_method, subtotal, shipping, total, slip_url)
        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`,
       [no, input.name, input.phone, input.email, input.address, input.city, input.district, input.notes, input.payment, subtotal, shipping, total, input.slipUrl],
     );
-    const orderId = (res as { insertId: number }).insertId;
     for (const v of vr) {
       const qty = merged.get(v.id)!;
-      await conn.query(
+      await tx.exec(
         "INSERT INTO order_items (order_id, product_id, variant_id, name, size, color, price, qty) VALUES (?,?,?,?,?,?,?,?)",
         [orderId, v.product_id, v.id, v.name, v.size, v.color, v.price, qty],
       );
-      await conn.query("UPDATE product_variants SET stock = stock - ? WHERE id = ?", [qty, v.id]);
+      await tx.exec("UPDATE product_variants SET stock = stock - ? WHERE id = ?", [qty, v.id]);
     }
-    await conn.commit();
     return { orderNo: no, total };
-  } catch (e) {
-    await conn.rollback();
-    throw e;
-  } finally {
-    conn.release();
-  }
-}
-
-/** Puts stock back (used when an order is cancelled). */
-export async function restock(orderId: number) {
-  await db().query(
-    `UPDATE product_variants v JOIN order_items i ON i.variant_id = v.id SET v.stock = v.stock + i.qty WHERE i.order_id = ?`,
-    [orderId],
-  );
+  });
 }

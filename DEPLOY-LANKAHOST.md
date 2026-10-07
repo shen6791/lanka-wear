@@ -55,3 +55,8 @@ It must be reachable from the internet, so it works on the live domain but not o
 
 **Upgrading a database created before card payments existed:** run `mysql/migrations/002-card-payments.sql` once in phpMyAdmin.
 (`1-database.sql` from a fresh build already includes it.)
+
+Upgrading an older database: also run `mysql/migrations/003-subscribers.sql` (newsletter signups).
+
+## Photos
+The demo catalogue hot-links free Unsplash photos. For launch, upload the brand's own photos per product in /admin → Products and delete the demo products.

@@ -1,0 +1,336 @@
+{
+ "products": {
+  "classic-heavy-tee": [
+   {
+    "url": "https://images.unsplash.com/photo-1618453292507-4959ece6429e",
+    "alt": "man in black crew neck t-shirt and black pants jumping on stairs",
+    "w": 3648,
+    "h": 4560,
+    "id": "aZFc5NRtJUQ"
+   },
+   {
+    "url": "https://images.unsplash.com/photo-1618453292610-4119319e5ac7",
+    "alt": "man in black t-shirt standing near white wall",
+    "w": 3648,
+    "h": 4560,
+    "id": "WjhnWfnM3jY"
+   }
+  ],
+  "linen-resort-shirt": [
+   {
+    "url": "https://images.unsplash.com/photo-1772583435283-b07bc9950497",
+    "alt": "Man in white shirt on a tropical beach",
+    "w": 4160,
+    "h": 6240,
+    "id": "1xM12BS0B_Y"
+   },
+   {
+    "url": "https://images.unsplash.com/photo-1713881587420-113c1c43e28a",
+    "alt": "a white shirt hanging on a clothes line",
+    "w": 2335,
+    "h": 3500,
+    "id": "S4f4apZd-hA"
+   }
+  ],
+  "tailored-chino": [
+   {
+    "url": "https://images.unsplash.com/photo-1781145611612-98a564fcc648",
+    "alt": "Man in white shirt stands among trees",
+    "w": 4000,
+    "h": 6000,
+    "id": "9R6EeWlDaBs"
+   },
+   {
+    "url": "https://images.unsplash.com/photo-1781106477750-9715ac448017",
+    "alt": "Young man wearing sunglasses sitting on a fallen log",
+    "w": 3024,
+    "h": 4032,
+    "id": "987CMomcXDU"
+   }
+  ],
+  "ceylon-wrap-dress": [
+   {
+    "url": "https://images.unsplash.com/photo-1789110854238-ca55b1a3559c",
+    "alt": "A woman wearing a white wrap dress with black ink blot patterns",
+    "w": 4318,
+    "h": 6570,
+    "id": "5HGxv4nigtQ"
+   },
+   {
+    "url": "https://images.unsplash.com/photo-1612722432474-b971cdcea546",
+    "alt": "woman in brown long sleeve dress standing beside gray wall",
+    "w": 2756,
+    "h": 4899,
+    "id": "_jd8I6yBWM4"
+   }
+  ],
+  "oversized-hoodie": [
+   {
+    "url": "https://images.unsplash.com/photo-1688111421205-a0a85415b224",
+    "alt": "a man with a beard wearing a white hoodie",
+    "w": 2832,
+    "h": 4240,
+    "id": "VoP2WK9rTa4"
+   },
+   {
+    "url": "https://images.unsplash.com/photo-1564557287817-3785e38ec1f5",
+    "alt": "men wearing a grey hoodie jacket leaning in a wall during daytime",
+    "w": 2948,
+    "h": 4421,
+    "id": "ZCoqcrWp9GY"
+   }
+  ],
+  "canvas-tote": [
+   {
+    "url": "https://images.unsplash.com/photo-1544816155-12df9643f363",
+    "alt": "beige eco bag",
+    "w": 3712,
+    "h": 5568,
+    "id": "1Pgq9ZpIatI"
+   },
+   {
+    "url": "https://images.unsplash.com/photo-1623222403596-d0255da44c0b",
+    "alt": "a woman carrying a bag on the street",
+    "w": 2000,
+    "h": 3000,
+    "id": "nNX1udK-xPk"
+   }
+  ],
+  "essential-polo": [
+   {
+    "url": "https://images.unsplash.com/photo-1609655106619-9d28f4f79c49",
+    "alt": "man in blue polo shirt standing near brown concrete building during da",
+    "w": 3968,
+    "h": 4960,
+    "id": "LTo6ce3YkSc"
+   },
+   {
+    "url": "https://images.unsplash.com/photo-1775306413232-fecd45367613",
+    "alt": "Man wearing a light blue polo shirt and black jeans",
+    "w": 4169,
+    "h": 5750,
+    "id": "xwnglFEJ-Uw"
+   }
+  ],
+  "linen-shorts": [
+   {
+    "url": "https://images.unsplash.com/photo-1789110853613-4ace8d4041e3",
+    "alt": "A person wearing white pleated shorts and white sneakers against a whi",
+    "w": 4480,
+    "h": 6720,
+    "id": "E8N3b5l1Ed0"
+   },
+   {
+    "url": "https://images.unsplash.com/photo-1782178393416-333632377265",
+    "alt": "Woman wearing sunglasses and shorts in sunny milos, greece",
+    "w": 5464,
+    "h": 8192,
+    "id": "RIO2iLmjLi4"
+   }
+  ],
+  "oxford-button-down": [
+   {
+    "url": "https://images.unsplash.com/photo-1624835567150-0c530a20d8cc",
+    "alt": "man in blue dress shirt and black dress pants standing",
+    "w": 2440,
+    "h": 3050,
+    "id": "OSS7Gd9whn8"
+   },
+   {
+    "url": "https://images.unsplash.com/photo-1770058428099-f2d64ab34006",
+    "alt": "Young man in a light blue collared shirt smiling",
+    "w": 3968,
+    "h": 5952,
+    "id": "az3QxXQ7Fqc"
+   }
+  ],
+  "pleated-wide-trousers": [
+   {
+    "url": "https://images.unsplash.com/photo-1668952135120-7d997b1b3778",
+    "alt": "a woman in a long coat",
+    "w": 3648,
+    "h": 5472,
+    "id": "Qy8IEssqkYU"
+   },
+   {
+    "url": "https://images.unsplash.com/photo-1580651214613-f4692d6d138f",
+    "alt": "woman in white long sleeve shirt and blue pants",
+    "w": 2584,
+    "h": 3883,
+    "id": "NJAFmCuIx1s"
+   }
+  ],
+  "slip-midi-dress": [
+   {
+    "url": "https://images.unsplash.com/photo-1704775983177-8ae543524081",
+    "alt": "A woman in a dark dress against a red background",
+    "w": 3973,
+    "h": 5959,
+    "id": "P2tOQRlqgTc"
+   },
+   {
+    "url": "https://images.unsplash.com/photo-1704775989614-8435994e4e97",
+    "alt": "Woman in a dark blue dress on a maroon background",
+    "w": 4227,
+    "h": 6340,
+    "id": "U_daD0yAVXY"
+   }
+  ],
+  "summer-maxi-dress": [
+   {
+    "url": "https://images.unsplash.com/photo-1509755512670-9e7af886e7e9",
+    "alt": "woman posing near under tree during daytime",
+    "w": 4000,
+    "h": 4987,
+    "id": "U0m4t8tD8Sk"
+   },
+   {
+    "url": "https://images.unsplash.com/photo-1759992878336-a5dd342ea245",
+    "alt": "Woman in a floral wrap dress with a high slit",
+    "w": 3680,
+    "h": 5549,
+    "id": "UJjzCVzYwuk"
+   }
+  ],
+  "cropped-boxy-tee": [
+   {
+    "url": "https://images.unsplash.com/photo-1609254105156-6661d2dcec49",
+    "alt": "woman in white t-shirt standing on wooden bridge during daytime",
+    "w": 3456,
+    "h": 5184,
+    "id": "lyaGjXnymas"
+   },
+   {
+    "url": "https://images.unsplash.com/photo-1609179146682-b9d201f88627",
+    "alt": "woman in white crew neck t-shirt and black pants wearing red framed ey",
+    "w": 3593,
+    "h": 5389,
+    "id": "QCP_9pUOuYA"
+   }
+  ],
+  "denim-overshirt": [
+   {
+    "url": "https://images.unsplash.com/photo-1611312449408-fcece27cdbb7",
+    "alt": "blue denim button up jacket",
+    "w": 2216,
+    "h": 3489,
+    "id": "QRN47la37gw"
+   },
+   {
+    "url": "https://images.unsplash.com/photo-1555583743-991174c11425",
+    "alt": "man in blue washed jacket",
+    "w": 3648,
+    "h": 5472,
+    "id": "1QOsJGbNIgk"
+   }
+  ],
+  "bucket-hat": [
+   {
+    "url": "https://images.unsplash.com/photo-1627683566270-bf7e75dfec0a",
+    "alt": "woman in white shirt wearing gray hat",
+    "w": 4000,
+    "h": 5600,
+    "id": "jK1X0eyjIlU"
+   },
+   {
+    "url": "https://images.unsplash.com/photo-1593460832239-072261224f29",
+    "alt": "man in white crew neck shirt wearing blue and purple plaid cap",
+    "w": 3222,
+    "h": 5182,
+    "id": "jeX_YkiM1Xo"
+   }
+  ],
+  "quilted-bomber-jacket": [
+   {
+    "url": "https://images.unsplash.com/photo-1777293875577-da93247013f2",
+    "alt": "Young woman in bomber jacket leans against pillar",
+    "w": 4128,
+    "h": 6192,
+    "id": "QZ50-Cxp94Y"
+   },
+   {
+    "url": "https://images.unsplash.com/photo-1629353689974-af4d5c70440f",
+    "alt": "man in green jacket standing near white wall",
+    "w": 2656,
+    "h": 3984,
+    "id": "9wM5SCjhsOM"
+   }
+  ],
+  "cotton-joggers": [
+   {
+    "url": "https://images.unsplash.com/photo-1789110520164-2389992e5d0f",
+    "alt": "A person wearing grey sweatpants and white sneakers against a plain wh",
+    "w": 4480,
+    "h": 6720,
+    "id": "D0eeGzigQ2k"
+   },
+   {
+    "url": "https://images.unsplash.com/photo-1789110853355-e40f5735b0c0",
+    "alt": "A woman in a white tank top and red sweatpants with white sneakers",
+    "w": 3754,
+    "h": 5631,
+    "id": "zwTOVBDiKMI"
+   }
+  ],
+  "everyday-cap": [
+   {
+    "url": "https://images.unsplash.com/photo-1534215754734-18e55d13e346",
+    "alt": "man in gray cap",
+    "w": 3243,
+    "h": 4661,
+    "id": "6NVrH0HB_DE"
+   },
+   {
+    "url": "https://images.unsplash.com/photo-1588850561407-ed78c282e89b",
+    "alt": "white baseball cap on white surface",
+    "w": 3648,
+    "h": 4853,
+    "id": "t8HiP3e5abg"
+   }
+  ]
+ },
+ "site": {
+  "hero": {
+   "url": "https://images.unsplash.com/photo-1653040321630-698cfc09254e",
+   "alt": "a woman standing against a wall with her hands on her head",
+   "w": 2662,
+   "h": 4000,
+   "id": "8guUei6UtPk"
+  },
+  "heroCard": {
+   "url": "https://images.unsplash.com/photo-1668952135120-7d997b1b3778",
+   "alt": "a woman in a long coat",
+   "w": 3648,
+   "h": 5472,
+   "id": "Qy8IEssqkYU"
+  },
+  "lookbook": {
+   "url": "https://images.unsplash.com/photo-1638265499174-62c2cb29137a",
+   "alt": "a woman sitting on top of a white block",
+   "w": 5541,
+   "h": 3796,
+   "id": "9mvUww4v5cg"
+  },
+  "story": {
+   "url": "https://images.unsplash.com/photo-1606501126768-b78d4569d3f9",
+   "alt": "person in gray shirt sewing",
+   "w": 5616,
+   "h": 3744,
+   "id": "TAZUc51iPUM"
+  },
+  "atelier": {
+   "url": "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04",
+   "alt": "clothing boutique interior with hanging racks",
+   "w": 7360,
+   "h": 4912,
+   "id": "qnKhZJPKFD8"
+  },
+  "men": {
+   "url": "https://images.unsplash.com/photo-1587072707615-c95b154d3ccb",
+   "alt": "man in brown leather jacket and green pants leaning on brown",
+   "w": 5760,
+   "h": 3840,
+   "id": "IVtZnehzr48"
+  }
+ }
+}

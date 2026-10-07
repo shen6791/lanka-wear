@@ -47,14 +47,24 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
           <ProductBuy slug={p.slug} name={p.name} price={p.price} image={p.image} variants={p.variants} />
 
-          {p.description && <p className="mt-10 whitespace-pre-line border-t border-line pt-8 text-sm leading-relaxed text-ink-soft">{p.description}</p>}
-
-          <ul className="mt-8 space-y-3 border-t border-line pt-8 text-sm text-ink-soft">
-            <li>• Delivery {lkr(s.shipping_colombo)} within Colombo area, {lkr(s.shipping_island)} island-wide</li>
-            {s.free_shipping_over > 0 && <li>• Free delivery on orders over {lkr(s.free_shipping_over)}</li>}
-            <li>• Cash on delivery &amp; bank transfer accepted</li>
-            <li>• Size exchange within 7 days</li>
-          </ul>
+          <div className="mt-10 divide-y divide-line border-y border-line text-sm text-ink-soft">
+            {[
+              ["Description", <p key="d" className="whitespace-pre-line leading-relaxed">{p.description ?? "A wardrobe essential, designed in Colombo."}</p>],
+              ["Delivery", <ul key="s" className="space-y-1.5"><li>Colombo area {lkr(s.shipping_colombo)} · 1–2 days</li><li>Rest of Sri Lanka {lkr(s.shipping_island)} · 2–4 days</li>{s.free_shipping_over > 0 && <li>Free over {lkr(s.free_shipping_over)}</li>}</ul>],
+              ["Returns & exchanges", <p key="r" className="leading-relaxed">Free size exchange within 7 days of delivery on unworn items with tags. <Link href="/shipping-returns" className="underline underline-offset-4">Read more</Link></p>],
+              ["Size & fit", <p key="f" className="leading-relaxed">Not sure of your size? <Link href="/size-guide" target="_blank" className="underline underline-offset-4">View the size guide</Link>. If you&apos;re between sizes, size up for a relaxed fit.</p>],
+            ].map(([t, body], i) => (
+              <details key={String(t)} className="group py-4" open={i === 0}>
+                <summary className="flex list-none items-center justify-between text-xs font-semibold uppercase tracking-[0.16em] text-ink [&::-webkit-details-marker]:hidden">
+                  {t}<span className="text-gold transition-transform group-open:rotate-45">+</span>
+                </summary>
+                <div className="mt-3">{body}</div>
+              </details>
+            ))}
+          </div>
+          <div className="mt-6 grid grid-cols-3 gap-3 text-center text-[11px] uppercase tracking-wider text-muted-fg">
+            <span className="border border-line p-3">Cash on delivery</span><span className="border border-line p-3">Secure card payment</span><span className="border border-line p-3">7-day exchange</span>
+          </div>
         </div>
       </div>
 

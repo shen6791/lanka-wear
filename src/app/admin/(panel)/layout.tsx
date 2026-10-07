@@ -12,6 +12,7 @@ const NAV = [
   ["/admin/orders", "Orders"],
   ["/admin/products", "Products"],
   ["/admin/categories", "Categories"],
+  ["/admin/subscribers", "Subscribers"],
   ["/admin/settings", "Settings"],
 ];
 

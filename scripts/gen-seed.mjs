@@ -1,9 +1,12 @@
 // Generates mysql/seed.sql and supabase/seed.sql (demo catalogue) from one definition.
-//   node scripts/gen-seed.mjs   (and node scripts/gen-samples.mjs for the illustrations)
-import { writeFileSync } from "node:fs";
+//   node scripts/gen-seed.mjs   (photo choices live in scripts/photos.json)
+import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 const root = path.resolve(import.meta.dirname, "..");
+const photos = JSON.parse(readFileSync(path.join(root, "scripts", "photos.json"), "utf8")).products;
+// Stock photography (Unsplash licence) hot-linked for the prototype; replace with real product photos in /admin.
+const img = (u) => `${u}?auto=format&fit=crop&crop=entropy&w=900&h=1200&q=80`;
 const cats = [[1, "t-shirts", "T-Shirts"], [2, "shirts", "Shirts"], [3, "trousers", "Trousers"], [4, "dresses", "Dresses"], [5, "accessories", "Accessories"], [6, "outerwear", "Outerwear"]];
 const S = (sizes, color, hex, stocks) => sizes.map((s, i) => [s, color, hex, stocks[i] ?? 8]);
 // id, slug, name, description, price, compare, category, featured, new, variants
@@ -37,7 +40,7 @@ const body = [
   "INSERT IGNORE INTO product_variants (product_id, size, color, color_hex, stock) VALUES\n " +
     P.flatMap((p) => p[9].map((v) => `(${p[0]},${q(v[0])},${q(v[1])},${q(v[2])},${v[3]})`)).join(",\n ") + ";",
   "INSERT IGNORE INTO product_images (id, product_id, url, sort) VALUES\n " +
-    P.flatMap((p) => [1, 2].map((n) => `(${++id},${p[0]},${q(`/samples/${p[1]}-${n}.svg`)},${n})`)).join(",\n ") + ";",
+    P.flatMap((p) => photos[p[1]].map((ph, n) => `(${++id},${p[0]},${q(img(ph.url))},${n + 1})`)).join(",\n ") + ";",
   "INSERT IGNORE INTO settings (k, v) VALUES ('brand_name','Lanka Wear');",
 ].join("\n\n");
 

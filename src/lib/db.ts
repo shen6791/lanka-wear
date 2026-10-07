@@ -183,3 +183,11 @@ export const unrestockOrder = (orderId: number) =>
       : "UPDATE product_variants v JOIN order_items i ON i.variant_id = v.id SET v.stock = GREATEST(0, v.stock - i.qty) WHERE i.order_id = ?",
     [orderId],
   );
+
+export const insertSubscriber = (email: string) =>
+  exec(
+    isPg
+      ? "INSERT INTO subscribers (email) VALUES (?) ON CONFLICT (email) DO NOTHING"
+      : "INSERT IGNORE INTO subscribers (email) VALUES (?)",
+    [email],
+  );

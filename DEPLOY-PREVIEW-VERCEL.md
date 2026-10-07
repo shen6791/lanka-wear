@@ -9,3 +9,6 @@ Live preview: https://lanka-wear.vercel.app  (admin: /admin, login in `PREVIEW-C
 - **Env vars on Vercel (Production):** DATABASE_URL, AUTH_SECRET, ADMIN_EMAIL, ADMIN_PASSWORD.
 - **Redeploy:** `npx vercel deploy --prod --yes` from this folder.
 - The same code runs on LankaHost with a MySQL `DATABASE_URL`; the DB layer picks the dialect from the URL.
+
+- **Sample catalogue:** 18 products with generated illustrations (`public/samples`, `node scripts/gen-samples.mjs`; seed via `node scripts/gen-seed.mjs`).
+- **Card payments:** PayHere. Enter credentials in /admin → Settings. Existing Supabase DBs need `supabase/migrations/002-card-payments.sql` (already applied to the preview).

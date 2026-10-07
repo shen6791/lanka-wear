@@ -51,7 +51,7 @@ export default async function OrderDetail({ params }: { params: Promise<{ id: st
             <dl className="mt-3 space-y-1 border-t border-line pt-3 text-sm">
               <div className="flex justify-between"><dt>Subtotal</dt><dd>{lkr(o.subtotal)}</dd></div>
               <div className="flex justify-between"><dt>Delivery</dt><dd>{lkr(o.shipping)}</dd></div>
-              <div className="flex justify-between text-base font-semibold"><dt>Total ({o.payment_method === "cod" ? "collect on delivery" : "bank transfer"})</dt><dd>{lkr(o.total)}</dd></div>
+              <div className="flex justify-between text-base font-semibold"><dt>Total ({({ cod: "collect on delivery", bank: "bank transfer", card: "card via PayHere" } as Record<string, string>)[o.payment_method]})</dt><dd>{lkr(o.total)}</dd></div>
             </dl>
           </section>
           <section className="bg-white p-6 text-sm">

@@ -7,13 +7,13 @@ import { placeOrder, type CheckoutState } from "@/app/(shop)/checkout/actions";
 import { COLOMBO_AREA, DISTRICTS, lkr } from "@/lib/format";
 import { ProductImage } from "./product-image";
 
-type Cfg = { colombo: number; island: number; freeOver: number; bankName: string; bankBranch: string; accName: string; accNo: string };
+type Cfg = { colombo: number; island: number; freeOver: number; bankName: string; bankBranch: string; accName: string; accNo: string; cardEnabled: boolean };
 
 export function CheckoutForm({ cfg }: { cfg: Cfg }) {
   const { items, subtotal } = useCart();
   const [state, action, pending] = useActionState<CheckoutState, FormData>(placeOrder, undefined);
   const [district, setDistrict] = useState("Colombo");
-  const [payment, setPayment] = useState<"cod" | "bank">("cod");
+  const [payment, setPayment] = useState<"cod" | "bank" | "card">("cod");
 
   const shipping = subtotal >= cfg.freeOver && cfg.freeOver > 0 ? 0 : COLOMBO_AREA.includes(district) ? cfg.colombo : cfg.island;
   const total = subtotal + shipping;
@@ -56,6 +56,18 @@ export function CheckoutForm({ cfg }: { cfg: Cfg }) {
               <input type="radio" name="payment" value="cod" checked={payment === "cod"} onChange={() => setPayment("cod")} className="mt-1 accent-[#1c1917]" />
               <span><b className="block text-sm">Cash on delivery</b><span className="text-sm text-muted-fg">Pay in cash when your order arrives.</span></span>
             </label>
+            {cfg.cardEnabled && (
+              <label className={`flex gap-4 border p-5 transition ${payment === "card" ? "border-ink bg-white" : "border-line"}`}>
+                <input type="radio" name="payment" value="card" checked={payment === "card"} onChange={() => setPayment("card")} className="mt-1 accent-[#1c1917]" />
+                <span>
+                  <b className="block text-sm">Credit / debit card</b>
+                  <span className="text-sm text-muted-fg">Visa, Mastercard, Amex and local wallets. You&apos;ll be taken to PayHere&apos;s secure page to pay.</span>
+                  <span className="mt-2 flex gap-2 text-[10px] font-semibold uppercase tracking-wider text-muted-fg">
+                    {["Visa", "Mastercard", "Amex", "FriMi", "Genie"].map((c) => <span key={c} className="border border-line px-1.5 py-0.5">{c}</span>)}
+                  </span>
+                </span>
+              </label>
+            )}
             <label className={`flex gap-4 border p-5 transition ${payment === "bank" ? "border-ink bg-white" : "border-line"}`}>
               <input type="radio" name="payment" value="bank" checked={payment === "bank"} onChange={() => setPayment("bank")} className="mt-1 accent-[#1c1917]" />
               <span className="w-full">
@@ -98,7 +110,7 @@ export function CheckoutForm({ cfg }: { cfg: Cfg }) {
           <div className="flex justify-between border-t border-line pt-3 text-lg font-semibold"><dt>Total</dt><dd>{lkr(total)}</dd></div>
         </dl>
         {state?.error && <p role="alert" className="mt-5 border border-red-300 bg-red-50 p-3 text-sm text-red-800">{state.error}</p>}
-        <button type="submit" disabled={pending} className="btn mt-6 w-full !py-4">{pending ? "Placing order…" : payment === "cod" ? "Place order" : "Place order & pay by transfer"}</button>
+        <button type="submit" disabled={pending} className="btn mt-6 w-full !py-4">{pending ? "Placing order…" : payment === "cod" ? "Place order" : payment === "card" ? "Continue to secure payment" : "Place order & pay by transfer"}</button>
         <p className="mt-4 text-center text-xs text-muted-fg">By placing your order you agree to be contacted to confirm delivery.</p>
       </aside>
     </form>

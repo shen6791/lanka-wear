@@ -1,7 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { getSettings } from "@/lib/data";
+import { getPayhere, getSettings } from "@/lib/data";
+import { orderToken } from "@/lib/auth";
 import { createOrder, OrderError, type CartLine } from "@/lib/orders";
 import { saveUpload } from "@/lib/storage";
 import { DISTRICTS, isLkMobile, normalizePhone } from "@/lib/format";
@@ -26,7 +27,8 @@ export async function placeOrder(_prev: CheckoutState, form: FormData): Promise<
   const city = str(form, "city", 120);
   const district = str(form, "district", 60);
   const notes = str(form, "notes", 600);
-  const payment = form.get("payment") === "bank" ? "bank" : "cod";
+  const pm = form.get("payment");
+  const payment: "cod" | "bank" | "card" = pm === "bank" ? "bank" : pm === "card" ? "card" : "cod";
 
   if (name.length < 2) return { error: "Please enter your full name." };
   if (!isLkMobile(phone)) return { error: "Enter a valid Sri Lankan mobile number (e.g. 0771234567)." };
@@ -42,6 +44,8 @@ export async function placeOrder(_prev: CheckoutState, form: FormData): Promise<
     if (!slipUrl) return { error: "Payment slip must be a JPG, PNG, WebP or PDF under 6 MB." };
   }
 
+  if (payment === "card" && !(await getPayhere()).enabled) return { error: "Card payments are not available right now." };
+
   let orderNo: string;
   try {
     ({ orderNo } = await createOrder(
@@ -54,5 +58,6 @@ export async function placeOrder(_prev: CheckoutState, form: FormData): Promise<
     console.error("placeOrder failed", e);
     return { error: "Something went wrong placing your order. Please try again." };
   }
-  redirect(`/order/${orderNo}?new=1`);
+  const t = orderToken(orderNo);
+  redirect(payment === "card" ? `/pay/${orderNo}?t=${t}` : `/order/${orderNo}?new=1&t=${t}`);
 }

@@ -5,15 +5,18 @@ import { rows, one } from "@/lib/db";
 import { getSettings } from "@/lib/data";
 import { lkr, STATUS_LABEL } from "@/lib/format";
 import { ClearCart } from "@/components/clear-cart";
+import { validOrderToken } from "@/lib/auth";
 
 export const metadata: Metadata = { title: "Order confirmation", robots: { index: false } };
 
-type Order = { id: number; order_no: string; payment_method: "cod" | "bank"; payment_status: string; status: string; subtotal: number; shipping: number; total: number; slip_url: string | null; tracking_note: string | null };
+type Order = { id: number; order_no: string; payment_method: "cod" | "bank" | "card"; payment_status: string; status: string; subtotal: number; shipping: number; total: number; slip_url: string | null; tracking_note: string | null };
 type Item = { name: string; size: string; color: string; price: number; qty: number };
 
-export default async function OrderPage({ params, searchParams }: { params: Promise<{ orderNo: string }>; searchParams: Promise<{ new?: string }> }) {
+export default async function OrderPage({ params, searchParams }: { params: Promise<{ orderNo: string }>; searchParams: Promise<{ new?: string; t?: string }> }) {
   const { orderNo } = await params;
-  const isNew = (await searchParams).new === "1";
+  const sp = await searchParams;
+  const isNew = sp.new === "1";
+  const canPay = validOrderToken(orderNo, sp.t);
   const o = await one<Order>("SELECT id, order_no, payment_method, payment_status, status, subtotal, shipping, total, slip_url, tracking_note FROM orders WHERE order_no = ?", [orderNo]);
   if (!o) notFound();
   const [items, s] = await Promise.all([rows<Item>("SELECT name, size, color, price, qty FROM order_items WHERE order_id = ?", [o.id]), getSettings()]);
@@ -41,6 +44,15 @@ export default async function OrderPage({ params, searchParams }: { params: Prom
             {o.slip_url ? "We've received your payment slip and will confirm shortly." : "Send your payment slip on WhatsApp"}
             {!o.slip_url && s.whatsapp && <> — <a className="underline" href={`https://wa.me/${s.whatsapp}?text=${encodeURIComponent(`Payment slip for order ${o.order_no}`)}`} target="_blank" rel="noreferrer">open WhatsApp</a></>}
           </p>
+        </div>
+      )}
+      {o.payment_method === "card" && o.payment_status !== "paid" && o.status !== "cancelled" && (
+        <div className="mt-10 border border-gold/40 bg-white p-6 text-sm">
+          <p className="font-display text-2xl">Card payment pending</p>
+          <p className="mt-2 text-muted-fg">
+            If you just paid, we&apos;re confirming it with the bank — this page updates within a minute. Otherwise you can complete the payment of <b className="text-ink">{lkr(o.total)}</b> now.
+          </p>
+          {canPay && <Link href={`/pay/${o.order_no}?t=${sp.t}`} className="btn mt-5">Pay {lkr(o.total)} by card</Link>}
         </div>
       )}
       {o.payment_method === "cod" && <p className="mt-8 text-center text-sm text-muted-fg">Pay <b className="text-ink">{lkr(o.total)}</b> in cash when your order arrives. We&apos;ll call you to confirm delivery.</p>}

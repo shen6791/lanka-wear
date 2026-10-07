@@ -11,7 +11,7 @@ export type OrderInput = {
   city: string;
   district: string;
   notes: string | null;
-  payment: "cod" | "bank";
+  payment: "cod" | "bank" | "card";
   slipUrl: string | null;
 };
 

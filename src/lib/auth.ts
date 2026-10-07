@@ -19,6 +19,10 @@ function safeEq(a: string, b: string) {
   return x.length === y.length && timingSafeEqual(x, y);
 }
 
+/** Short signed token proving the holder came from checkout / verified tracking (guards the pay page). */
+export const orderToken = (orderNo: string) => sign("order:" + orderNo).slice(0, 22);
+export const validOrderToken = (orderNo: string, t?: string | null) => !!t && safeEq(t, orderToken(orderNo));
+
 export function checkCredentials(email: string, password: string) {
   const e = process.env.ADMIN_EMAIL ?? "";
   const p = process.env.ADMIN_PASSWORD ?? "";

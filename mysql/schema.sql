@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS orders (
   city VARCHAR(120) NOT NULL,
   district VARCHAR(60) NOT NULL,
   notes VARCHAR(600) NULL,
-  payment_method ENUM('cod','bank') NOT NULL,
+  payment_method ENUM('cod','bank','card') NOT NULL,
   payment_status ENUM('pending','paid') NOT NULL DEFAULT 'pending',
   status ENUM('pending','confirmed','shipped','delivered','cancelled') NOT NULL DEFAULT 'pending',
   subtotal DECIMAL(10,2) NOT NULL,

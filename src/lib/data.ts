@@ -18,6 +18,9 @@ export type Settings = {
   bank_account_name: string;
   bank_account_no: string;
   announcement: string;
+  card_enabled: number;
+  payhere_sandbox: number;
+  payhere_merchant_id: string;
 };
 
 const DEFAULTS: Settings = {
@@ -37,9 +40,12 @@ const DEFAULTS: Settings = {
   bank_account_name: "Lanka Wear (Pvt) Ltd",
   bank_account_no: "0000000000",
   announcement: "Island-wide delivery · Cash on delivery available · Free shipping over Rs. 10,000",
+  card_enabled: 1,
+  payhere_sandbox: 1,
+  payhere_merchant_id: "",
 };
 
-const NUMERIC = new Set(["shipping_colombo", "shipping_island", "free_shipping_over"]);
+const NUMERIC = new Set(["shipping_colombo", "shipping_island", "free_shipping_over", "card_enabled", "payhere_sandbox"]);
 
 export const getSettings = cache(async (): Promise<Settings> => {
   const out: Record<string, string | number> = { ...DEFAULTS };
@@ -137,4 +143,20 @@ export async function getProduct(slug: string): Promise<ProductFull | null> {
     [p.id],
   );
   return { ...p, images, image: images[0] ?? null, image2: images[1] ?? null, variants, in_stock: variants.reduce((a, v) => a + v.stock, 0) };
+}
+
+/** PayHere config incl. the secret. Server-only: never pass this object to a client component. */
+export async function getPayhere() {
+  const s = await getSettings();
+  let secret = "";
+  try {
+    secret = (await one<{ v: string }>("SELECT v FROM settings WHERE k = 'payhere_merchant_secret'"))?.v ?? "";
+  } catch {}
+  return {
+    enabled: s.card_enabled === 1,
+    sandbox: s.payhere_sandbox === 1,
+    merchantId: s.payhere_merchant_id.trim(),
+    secret: secret.trim(),
+    ready: !!(s.payhere_merchant_id.trim() && secret.trim()),
+  };
 }

@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS orders (
   city VARCHAR(120) NOT NULL,
   district VARCHAR(60) NOT NULL,
   notes VARCHAR(600) NULL,
-  payment_method VARCHAR(10) NOT NULL CHECK (payment_method IN ('cod','bank')),
+  payment_method VARCHAR(10) NOT NULL CHECK (payment_method IN ('cod','bank','card')),
   payment_status VARCHAR(10) NOT NULL DEFAULT 'pending' CHECK (payment_status IN ('pending','paid')),
   status VARCHAR(12) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','confirmed','shipped','delivered','cancelled')),
   subtotal NUMERIC(10,2) NOT NULL,

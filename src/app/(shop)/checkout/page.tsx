@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { getSettings } from "@/lib/data";
+import { getPayhere, getSettings } from "@/lib/data";
 import { CheckoutForm } from "@/components/checkout-form";
 
 export const metadata: Metadata = { title: "Checkout" };
 
 export default async function Checkout() {
-  const s = await getSettings();
+  const [s, ph] = await Promise.all([getSettings(), getPayhere()]);
   return (
     <div className="mx-auto max-w-7xl px-5 py-12 md:px-8 md:py-16">
       <p className="eyebrow">Almost there</p>
@@ -19,6 +19,7 @@ export default async function Checkout() {
           bankBranch: s.bank_branch,
           accName: s.bank_account_name,
           accNo: s.bank_account_no,
+          cardEnabled: ph.enabled,
         }}
       />
     </div>

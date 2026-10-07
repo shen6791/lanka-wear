@@ -46,3 +46,12 @@ Rebuild, upload the new zip, extract over the old app folder (photos in `STORAGE
 ## Notes
 - Payment slips are private (only visible when signed in to admin).
 - Back up the database (cPanel → Backup) and the storage folder regularly.
+
+## Card payments (PayHere)
+Card payment uses [PayHere](https://www.payhere.lk). In **/admin → Settings → Card payments** enter the Merchant ID and Merchant Secret
+(PayHere dashboard → Settings → Domains & Credentials), add the site's domain there, and untick *Test mode* when going live.
+Settings shows the notification URL to register (`https://your-domain/api/payhere/notify`).
+It must be reachable from the internet, so it works on the live domain but not on localhost.
+
+**Upgrading a database created before card payments existed:** run `mysql/migrations/002-card-payments.sql` once in phpMyAdmin.
+(`1-database.sql` from a fresh build already includes it.)

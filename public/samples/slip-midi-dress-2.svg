@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" role="img" aria-label="slip midi dress alternate">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2a2623"/><stop offset="1" stop-color="#12100f"/></linearGradient>
+<linearGradient id="sh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".18"/><stop offset=".45" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient>
+<filter id="blur"><feGaussianBlur stdDeviation="14"/></filter>
+</defs>
+<rect width="600" height="800" fill="url(#bg)"/>
+<ellipse cx="300" cy="742" rx="190" ry="20" fill="#000" opacity=".16" filter="url(#blur)"/>
+<g><path d="M238 128 L268 128 Q300 188 332 128 L362 128 L384 330 L478 705 L122 705 L216 330Z" fill="#c9a24a"/>
+    <path d="M216 330 L384 330 L388 352 L212 352Z" fill="rgba(0,0,0,.2)"/><path d="M300 352 L300 705" stroke="rgba(0,0,0,.1)" stroke-width="3"/>
+    <path d="M268 128 Q300 188 332 128" fill="none" stroke="rgba(0,0,0,.25)" stroke-width="4"/></g>
+<g style="mix-blend-mode:multiply" opacity=".9"><rect width="600" height="800" fill="url(#sh)" opacity=".35"/></g>
+</svg>

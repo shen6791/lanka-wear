@@ -7,9 +7,9 @@ export const metadata: Metadata = { title: "Checkout" };
 export default async function Checkout() {
   const [s, ph] = await Promise.all([getSettings(), getPayhere()]);
   return (
-    <div className="mx-auto max-w-7xl px-5 py-12 md:px-8 md:py-16">
+    <div className="mx-auto max-w-7xl px-5 py-8 md:px-8 md:py-16">
       <p className="eyebrow">Almost there</p>
-      <h1 className="mb-12 mt-2 text-5xl md:text-6xl">Checkout</h1>
+      <h1 className="mb-8 mt-2 text-4xl md:mb-12 md:text-6xl">Checkout</h1>
       <CheckoutForm
         cfg={{
           colombo: s.shipping_colombo,

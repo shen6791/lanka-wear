@@ -32,20 +32,20 @@ export default async function Home() {
       {/* Hero */}
       <section className="relative isolate overflow-hidden bg-ink text-white">
         <div className="absolute inset-0 -z-10 opacity-70" style={{ background: "radial-gradient(60% 80% at 85% 10%, rgba(201,162,74,0.32), transparent 60%), radial-gradient(50% 60% at 5% 95%, rgba(161,98,7,0.28), transparent 60%)" }} />
-        <div className="mx-auto grid min-h-[84vh] max-w-7xl items-center gap-12 px-5 py-16 md:grid-cols-[1.05fr_1fr] md:px-8">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-12 md:min-h-[84vh] md:grid-cols-[1.05fr_1fr] md:px-8 md:py-16">
           <div>
             <p className="eyebrow fade-up">New collection · 2026</p>
-            <h1 className="fade-up mt-5 text-6xl font-medium leading-[0.95] md:text-8xl" style={{ animationDelay: "0.1s" }}>
+            <h1 className="fade-up mt-4 text-[2.9rem] font-medium leading-[0.98] sm:text-6xl md:mt-5 md:text-8xl" style={{ animationDelay: "0.1s" }}>
               Dressed for the<br /><em className="font-normal text-gold-soft">island life.</em>
             </h1>
             <p className="fade-up mt-7 max-w-md text-base leading-relaxed text-white/70" style={{ animationDelay: "0.2s" }}>
               {s.tagline} Considered cuts in breathable cotton and linen, made for Colombo mornings and coastal evenings.
             </p>
-            <div className="fade-up mt-10 flex flex-wrap gap-4" style={{ animationDelay: "0.3s" }}>
+            <div className="fade-up mt-8 grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:gap-4 md:mt-10" style={{ animationDelay: "0.3s" }}>
               <Link href="/shop" className="btn btn-light hover:!bg-gold hover:!border-gold hover:!text-white">Shop the collection</Link>
               <Link href="/about" className="btn btn-ghost !text-white !border-white/40 hover:!bg-white hover:!text-ink">Our story</Link>
             </div>
-            <dl className="fade-up mt-14 grid max-w-md grid-cols-3 gap-6 border-t border-white/15 pt-6 text-sm" style={{ animationDelay: "0.4s" }}>
+            <dl className="fade-up mt-10 grid max-w-md grid-cols-3 gap-4 border-t border-white/15 pt-6 text-sm md:mt-14 md:gap-6" style={{ animationDelay: "0.4s" }}>
               {[["18+", "New pieces"], ["1–2 days", "Colombo delivery"], ["7 days", "Easy exchange"]].map(([a, b]) => (
                 <div key={b}><dt className="font-display text-3xl text-gold-soft">{a}</dt><dd className="mt-1 text-xs text-white/60">{b}</dd></div>
               ))}
@@ -73,7 +73,7 @@ export default async function Home() {
 
       {/* Categories */}
       {cats.length > 0 && (
-        <section className="mx-auto max-w-7xl px-5 pt-20 md:px-8">
+        <section className="mx-auto max-w-7xl px-5 pt-14 md:px-8 md:pt-20">
           <p className="eyebrow">Browse</p>
           <h2 className="mt-2 text-4xl md:text-5xl">Shop by category</h2>
           <div className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
@@ -92,7 +92,7 @@ export default async function Home() {
       )}
 
       {/* New arrivals */}
-      <section className="mx-auto max-w-7xl px-5 pt-24 md:px-8">
+      <section className="mx-auto max-w-7xl px-5 pt-16 md:px-8 md:pt-24">
         <div className="flex items-end justify-between">
           <div>
             <p className="eyebrow">Just landed</p>
@@ -106,12 +106,12 @@ export default async function Home() {
       </section>
 
       {/* Lookbook banner */}
-      <section className="mx-auto mt-24 max-w-7xl px-5 md:px-8">
+      <section className="mx-auto mt-16 max-w-7xl px-5 md:mt-24 md:px-8">
         <div className="grid overflow-hidden bg-ink text-white md:grid-cols-2">
           <img src={unsplash(SITE.lookbook.url, 1100, 900)} alt={SITE.lookbook.alt} loading="lazy" className="aspect-[4/3] h-full w-full object-cover md:aspect-auto" />
-          <div className="flex flex-col justify-center p-10 md:p-16">
+          <div className="flex flex-col justify-center p-7 sm:p-10 md:p-16">
             <p className="eyebrow">The Summer Edit</p>
-            <h2 className="mt-3 text-4xl leading-tight md:text-6xl">Light layers for<br />long afternoons.</h2>
+            <h2 className="mt-3 text-4xl leading-tight md:text-6xl">Light layers for long afternoons.</h2>
             <p className="mt-5 max-w-md leading-relaxed text-white/70">Breathable linen shirts, easy shorts and fluid dresses — styled to go from the office to the beach without a change.</p>
             <Link href="/shop?category=dresses" className="btn btn-light mt-8 self-start hover:!bg-gold hover:!border-gold hover:!text-white">Shop the edit</Link>
           </div>
@@ -120,7 +120,7 @@ export default async function Home() {
 
       {/* Bestsellers */}
       {featured.length > 0 && (
-        <section className="mx-auto max-w-7xl px-5 pt-24 md:px-8">
+        <section className="mx-auto max-w-7xl px-5 pt-16 md:px-8 md:pt-24">
           <p className="eyebrow">Customer favourites</p>
           <h2 className="mt-2 text-4xl md:text-5xl">Most loved</h2>
           <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-x-6">
@@ -130,9 +130,9 @@ export default async function Home() {
       )}
 
       {/* Story */}
-      <section className="mx-auto mt-24 max-w-7xl px-5 md:px-8">
+      <section className="mx-auto mt-16 max-w-7xl px-5 md:mt-24 md:px-8">
         <div className="grid items-stretch overflow-hidden bg-muted md:grid-cols-2">
-          <div className="flex flex-col justify-center p-10 md:p-16">
+          <div className="flex flex-col justify-center p-7 sm:p-10 md:p-16">
             <p className="eyebrow">Our promise</p>
             <h2 className="mt-3 text-4xl md:text-5xl">Less noise.<br />Better clothes.</h2>
             <p className="mt-5 max-w-md leading-relaxed text-ink-soft">
@@ -145,7 +145,7 @@ export default async function Home() {
       </section>
 
       {/* Reviews */}
-      <section className="mx-auto max-w-7xl px-5 pt-24 md:px-8">
+      <section className="mx-auto max-w-7xl px-5 pt-16 md:px-8 md:pt-24">
         <p className="eyebrow text-center">Kind words</p>
         <h2 className="mt-2 text-center text-4xl md:text-5xl">Loved across the island</h2>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
@@ -160,7 +160,7 @@ export default async function Home() {
       </section>
 
       {/* Gallery */}
-      <section className="mx-auto max-w-7xl px-5 pt-24 md:px-8">
+      <section className="mx-auto max-w-7xl px-5 pt-16 md:px-8 md:pt-24">
         <div className="flex items-end justify-between">
           <div><p className="eyebrow">On the gram</p><h2 className="mt-2 text-4xl md:text-5xl">{s.instagram ? "@" + (s.instagram.split("/").filter(Boolean).pop() ?? "lankawear") : "@lankawear"}</h2></div>
           {s.instagram && <a href={s.instagram} target="_blank" rel="noreferrer" className="hidden text-xs font-semibold uppercase tracking-[0.18em] underline underline-offset-8 hover:text-gold sm:block">Follow us</a>}
@@ -176,7 +176,7 @@ export default async function Home() {
       </section>
 
       {/* Perks */}
-      <section className="mx-auto mt-24 grid max-w-7xl gap-8 px-5 md:grid-cols-4 md:px-8">
+      <section className="mx-auto mt-16 grid max-w-7xl grid-cols-2 gap-6 px-5 md:mt-24 md:grid-cols-4 md:gap-8 md:px-8">
         {PERKS.map(([t, d]) => (
           <div key={t} className="border-t border-ink pt-5">
             <p className="font-display text-2xl">{t}</p>

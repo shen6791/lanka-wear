@@ -27,13 +27,13 @@ export function CheckoutForm({ cfg }: { cfg: Cfg }) {
     );
 
   return (
-    <form action={action} className="grid gap-12 lg:grid-cols-[1.4fr_1fr]">
+    <form action={action} className="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-12 [&>*]:min-w-0">
       <input type="hidden" name="cart" value={JSON.stringify(items.map((i) => ({ variantId: i.variantId, qty: i.qty })))} />
 
       <div className="space-y-12">
         <section>
           <h2 className="mb-6 text-3xl">Delivery details</h2>
-          <div className="grid gap-5 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
             <div className="sm:col-span-2"><label className="label" htmlFor="name">Full name *</label><input id="name" name="name" required autoComplete="name" className="field" /></div>
             <div><label className="label" htmlFor="phone">Mobile number *</label><input id="phone" name="phone" required inputMode="tel" autoComplete="tel" placeholder="077 123 4567" className="field" /></div>
             <div><label className="label" htmlFor="email">Email (optional)</label><input id="email" name="email" type="email" autoComplete="email" className="field" /></div>
@@ -52,23 +52,23 @@ export function CheckoutForm({ cfg }: { cfg: Cfg }) {
         <section>
           <h2 className="mb-6 text-3xl">Payment</h2>
           <div className="space-y-3">
-            <label className={`flex gap-4 border p-5 transition ${payment === "cod" ? "border-ink bg-white" : "border-line"}`}>
+            <label className={`flex gap-3 border p-4 transition sm:gap-4 sm:p-5 ${payment === "cod" ? "border-ink bg-white" : "border-line"}`}>
               <input type="radio" name="payment" value="cod" checked={payment === "cod"} onChange={() => setPayment("cod")} className="mt-1 accent-[#1c1917]" />
               <span><b className="block text-sm">Cash on delivery</b><span className="text-sm text-muted-fg">Pay in cash when your order arrives.</span></span>
             </label>
             {cfg.cardEnabled && (
-              <label className={`flex gap-4 border p-5 transition ${payment === "card" ? "border-ink bg-white" : "border-line"}`}>
+              <label className={`flex gap-3 border p-4 transition sm:gap-4 sm:p-5 ${payment === "card" ? "border-ink bg-white" : "border-line"}`}>
                 <input type="radio" name="payment" value="card" checked={payment === "card"} onChange={() => setPayment("card")} className="mt-1 accent-[#1c1917]" />
                 <span>
                   <b className="block text-sm">Credit / debit card</b>
                   <span className="text-sm text-muted-fg">Visa, Mastercard, Amex and local wallets. You&apos;ll be taken to PayHere&apos;s secure page to pay.</span>
-                  <span className="mt-2 flex gap-2 text-[10px] font-semibold uppercase tracking-wider text-muted-fg">
+                  <span className="mt-2 flex flex-wrap gap-2 text-[10px] font-semibold uppercase tracking-wider text-muted-fg">
                     {["Visa", "Mastercard", "Amex", "FriMi", "Genie"].map((c) => <span key={c} className="border border-line px-1.5 py-0.5">{c}</span>)}
                   </span>
                 </span>
               </label>
             )}
-            <label className={`flex gap-4 border p-5 transition ${payment === "bank" ? "border-ink bg-white" : "border-line"}`}>
+            <label className={`flex gap-3 border p-4 transition sm:gap-4 sm:p-5 ${payment === "bank" ? "border-ink bg-white" : "border-line"}`}>
               <input type="radio" name="payment" value="bank" checked={payment === "bank"} onChange={() => setPayment("bank")} className="mt-1 accent-[#1c1917]" />
               <span className="w-full">
                 <b className="block text-sm">Bank transfer</b>
@@ -90,7 +90,7 @@ export function CheckoutForm({ cfg }: { cfg: Cfg }) {
         </section>
       </div>
 
-      <aside className="h-fit bg-white p-7 lg:sticky lg:top-28">
+      <aside className="h-fit bg-white p-5 sm:p-7 lg:sticky lg:top-28">
         <h2 className="mb-5 text-3xl">Order summary</h2>
         <ul className="divide-y divide-line">
           {items.map((i) => (

@@ -20,25 +20,25 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const gallery = p.images.length ? p.images : [null];
 
   return (
-    <div className="mx-auto max-w-7xl px-5 py-8 md:px-8 md:py-12">
-      <nav className="mb-6 text-xs text-muted-fg" aria-label="Breadcrumb">
+    <div className="mx-auto max-w-7xl px-5 py-6 pb-28 md:px-8 md:py-12 md:pb-12">
+      <nav className="mb-4 truncate text-xs text-muted-fg md:mb-6" aria-label="Breadcrumb">
         <Link href="/shop" className="hover:text-ink">Shop</Link>
         {p.category && <> / <Link href={`/shop?category=${p.category_slug}`} className="hover:text-ink">{p.category}</Link></>}
         <> / <span className="text-ink">{p.name}</span></>
       </nav>
 
-      <div className="grid gap-10 md:grid-cols-[1.15fr_1fr] md:gap-16">
-        <div className={`grid gap-3 ${gallery.length > 1 ? "grid-cols-2" : ""}`}>
+      <div className="grid gap-8 md:grid-cols-[1.15fr_1fr] md:gap-16">
+        <div className="-mx-5 flex snap-x snap-mandatory gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] md:mx-0 md:grid md:gap-3 md:overflow-visible md:px-0 md:pb-0 md:grid-cols-2 [&::-webkit-scrollbar]:hidden" aria-label="Product photos">
           {gallery.map((src, i) => (
-            <div key={i} className={`overflow-hidden bg-muted ${gallery.length === 1 || i === 0 ? "aspect-[3/4]" : "aspect-[3/4]"} ${gallery.length > 1 && i === 0 && gallery.length % 2 === 1 ? "col-span-2" : ""}`}>
+            <div key={i} className={`aspect-[3/4] shrink-0 snap-center overflow-hidden bg-muted ${gallery.length > 1 ? "w-[86%]" : "w-full"} md:w-auto ${gallery.length > 1 && i === 0 && gallery.length % 2 === 1 ? "md:col-span-2" : ""}`}>
               <ProductImage src={src} name={p.name} priority={i === 0} />
             </div>
           ))}
         </div>
 
-        <div className="md:sticky md:top-28 md:self-start">
+        <div className="min-w-0 md:sticky md:top-28 md:self-start">
           {p.is_new === 1 && <p className="eyebrow mb-3">New</p>}
-          <h1 className="text-4xl leading-tight md:text-5xl">{p.name}</h1>
+          <h1 className="text-[2.2rem] leading-tight md:text-5xl">{p.name}</h1>
           <p className="mt-4 text-xl">
             {off > 0 && <span className="mr-3 text-base text-muted-fg line-through">{lkr(p.compare_price!)}</span>}
             {lkr(p.price)}
@@ -69,7 +69,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       </div>
 
       {related.length > 0 && (
-        <section className="mt-24">
+        <section className="mt-16 md:mt-24">
           <h2 className="text-3xl md:text-4xl">You may also like</h2>
           <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-x-6">
             {related.map((r) => <ProductCard key={r.id} p={r} />)}

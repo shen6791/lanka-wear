@@ -28,14 +28,14 @@ export function ProductCard({ p }: { p: P }) {
           )}
         </div>
       </div>
-      <div className="mt-3 flex items-start justify-between gap-3">
+      <div className="mt-3 flex flex-col gap-1 lg:flex-row lg:items-start lg:justify-between lg:gap-3">
         <div>
           <h3 className="text-[0.95rem] font-medium leading-tight tracking-normal" style={{ fontFamily: "var(--font-body)" }}>
             {p.name}
           </h3>
           {p.category && <p className="mt-0.5 text-xs text-muted-fg">{p.category}</p>}
         </div>
-        <p className="shrink-0 text-sm">
+        <p className="text-sm lg:shrink-0">
           {off > 0 && <span className="mr-1.5 text-xs text-muted-fg line-through">{lkr(p.compare_price!)}</span>}
           <span className="font-medium">{lkr(p.price)}</span>
         </p>

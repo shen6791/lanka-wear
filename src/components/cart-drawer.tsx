@@ -65,17 +65,17 @@ export function CartDrawer({ freeOver }: { freeOver: number }) {
                     <p className="mt-1 text-xs text-muted-fg">{[i.color, i.size].filter(Boolean).join(" · ")}</p>
                     <div className="mt-auto flex items-center justify-between">
                       <div className="flex items-center border border-line">
-                        <button aria-label="Decrease quantity" className="h-8 w-8" onClick={() => setQty(i.variantId, i.qty - 1)}>−</button>
+                        <button aria-label="Decrease quantity" className="h-10 w-10" onClick={() => setQty(i.variantId, i.qty - 1)}>−</button>
                         <span className="w-8 text-center text-sm" aria-live="polite">{i.qty}</span>
-                        <button aria-label="Increase quantity" className="h-8 w-8 disabled:opacity-30" disabled={i.qty >= i.max} onClick={() => setQty(i.variantId, i.qty + 1)}>+</button>
+                        <button aria-label="Increase quantity" className="h-10 w-10 disabled:opacity-30" disabled={i.qty >= i.max} onClick={() => setQty(i.variantId, i.qty + 1)}>+</button>
                       </div>
-                      <button className="text-xs underline underline-offset-4 text-muted-fg hover:text-ink" onClick={() => remove(i.variantId)}>Remove</button>
+                      <button className="px-1 py-2 text-xs underline underline-offset-4 text-muted-fg hover:text-ink" onClick={() => remove(i.variantId)}>Remove</button>
                     </div>
                   </div>
                 </li>
               ))}
             </ul>
-            <div className="border-t border-line p-6">
+            <div className="border-t border-line p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
               <div className="mb-1 flex justify-between text-sm"><span>Subtotal</span><span className="font-semibold">{lkr(subtotal)}</span></div>
               <p className="mb-4 text-xs text-muted-fg">Delivery calculated at checkout.</p>
               <Link href="/checkout" onClick={() => setOpen(false)} className="btn w-full">Checkout</Link>

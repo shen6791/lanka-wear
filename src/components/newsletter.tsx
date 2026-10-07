@@ -6,8 +6,8 @@ import { subscribe, type SubState } from "@/app/(shop)/subscribe";
 export function Newsletter() {
   const [state, action, pending] = useActionState<SubState, FormData>(subscribe, undefined);
   return (
-    <section className="mx-auto mt-24 max-w-7xl px-5 md:px-8">
-      <div className="bg-ink px-6 py-16 text-center text-white md:px-16">
+    <section className="mx-auto mt-16 max-w-7xl px-5 md:mt-24 md:px-8">
+      <div className="bg-ink px-5 py-12 text-center text-white md:px-16 md:py-16">
         <p className="eyebrow">Stay in the loop</p>
         <h2 className="mt-3 text-4xl md:text-5xl">Be first to know</h2>
         <p className="mx-auto mt-4 max-w-md text-white/70">New drops, restocks and subscriber-only offers. No spam, unsubscribe anytime.</p>

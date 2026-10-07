@@ -6,9 +6,9 @@ const PAY = ["Visa", "Mastercard", "Amex", "COD", "Bank transfer"];
 export function Footer({ s }: { s: Settings }) {
   const link = "transition-colors hover:text-white";
   return (
-    <footer className="mt-24 bg-ink text-white/80">
-      <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 md:grid-cols-[1.6fr_1fr_1fr_1.2fr] md:px-8">
-        <div>
+    <footer className="mt-16 bg-ink md:mt-24 text-white/80">
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-x-6 gap-y-10 px-5 py-12 md:grid-cols-[1.6fr_1fr_1fr_1.2fr] md:gap-12 md:py-16 md:px-8">
+        <div className="col-span-2 md:col-span-1">
           <p className="font-display text-3xl font-semibold uppercase tracking-[0.28em] text-white">{s.brand_name}</p>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/60">{s.tagline} Designed and cut in Colombo, delivered across Sri Lanka.</p>
           <div className="mt-6 flex flex-wrap gap-2" aria-label="Accepted payment methods">
@@ -35,7 +35,7 @@ export function Footer({ s }: { s: Settings }) {
             <li><Link className={link} href="/contact">Contact</Link></li>
           </ul>
         </div>
-        <div>
+        <div className="col-span-2 md:col-span-1">
           <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-soft">Visit &amp; contact</p>
           <ul className="space-y-2.5 text-sm">
             <li>{s.address}</li>

@@ -30,7 +30,14 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
+body { overflow-x: clip; }
+@media (max-width: 767px) {
+  /* 16px inputs stop iOS Safari zooming in on focus */
+  .field, input, select, textarea { font-size: 16px !important; }
+}
+a, button { -webkit-tap-highlight-color: transparent; }
 
 body {
   background: var(--background);
@@ -57,6 +64,7 @@ button:disabled {
 }
 
 .btn {
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
   justify-content: center;

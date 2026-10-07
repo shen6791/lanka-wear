@@ -1,0 +1,26 @@
+import type { Metadata } from "next";
+import { getSettings } from "@/lib/data";
+import { CheckoutForm } from "@/components/checkout-form";
+
+export const metadata: Metadata = { title: "Checkout" };
+
+export default async function Checkout() {
+  const s = await getSettings();
+  return (
+    <div className="mx-auto max-w-7xl px-5 py-12 md:px-8 md:py-16">
+      <p className="eyebrow">Almost there</p>
+      <h1 className="mb-12 mt-2 text-5xl md:text-6xl">Checkout</h1>
+      <CheckoutForm
+        cfg={{
+          colombo: s.shipping_colombo,
+          island: s.shipping_island,
+          freeOver: s.free_shipping_over,
+          bankName: s.bank_name,
+          bankBranch: s.bank_branch,
+          accName: s.bank_account_name,
+          accNo: s.bank_account_no,
+        }}
+      />
+    </div>
+  );
+}

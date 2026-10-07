@@ -84,6 +84,15 @@ CREATE TABLE IF NOT EXISTS settings (
   v TEXT NOT NULL
 );
 
+-- uploaded photos / payment slips (used when no Supabase Storage keys are configured)
+CREATE TABLE IF NOT EXISTS media_files (
+  path VARCHAR(300) PRIMARY KEY,
+  content_type VARCHAR(60) NOT NULL,
+  data BYTEA NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+ALTER TABLE media_files ENABLE ROW LEVEL SECURITY;
 ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE products ENABLE ROW LEVEL SECURITY;
 ALTER TABLE product_variants ENABLE ROW LEVEL SECURITY;

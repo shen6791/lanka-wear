@@ -1,0 +1,5 @@
+/deploy
+/storage
+/node_modules
+/.next
+.env*

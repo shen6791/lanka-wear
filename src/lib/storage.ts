@@ -1,10 +1,12 @@
 import { mkdir, readFile, writeFile } from "fs/promises";
 import path from "path";
 import { randomBytes } from "crypto";
+import { exec, isPg, one } from "./db";
 
 /**
  * Two backends:
- *  - Supabase Storage (Vercel preview): set SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY (private bucket, served via /media)
+ *  - Postgres table `media_files` (Vercel preview; automatic when DATABASE_URL is Postgres and no Supabase keys are set)
+ *  - Supabase Storage: set SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY (private bucket, served via /media)
  *  - Local disk (LankaHost): STORAGE_DIR, keep it OUTSIDE the app folder so redeploys don't wipe uploads.
  */
 export const STORAGE_DIR = path.resolve(process.env.STORAGE_DIR || path.join(/*turbopackIgnore: true*/ process.cwd(), "storage"));
@@ -13,6 +15,7 @@ const SB_URL = process.env.SUPABASE_URL?.replace(/\/$/, "");
 const SB_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const BUCKET = process.env.SUPABASE_BUCKET || "lanka-wear";
 const useSupabase = !!(SB_URL && SB_KEY);
+const useDb = isPg && !useSupabase;
 
 const TYPES: Record<string, string> = {
   "image/jpeg": "jpg",
@@ -36,7 +39,9 @@ export async function saveUpload(file: File, folder: "products" | "slips", opts:
   const name = `${Date.now().toString(36)}-${randomBytes(6).toString("hex")}.${ext}`;
   const data = Buffer.from(await file.arrayBuffer());
 
-  if (useSupabase) {
+  if (useDb) {
+    await exec("INSERT INTO media_files (path, content_type, data) VALUES (?, ?, ?)", [`${folder}/${name}`, file.type, data]);
+  } else if (useSupabase) {
     const r = await fetch(`${SB_URL}/storage/v1/object/${BUCKET}/${folder}/${name}`, {
       method: "POST",
       headers: { Authorization: `Bearer ${SB_KEY}`, "Content-Type": file.type, "x-upsert": "false" },
@@ -56,6 +61,10 @@ export async function saveUpload(file: File, folder: "products" | "slips", opts:
 
 /** Reads a stored file; null if missing. */
 export async function readStored(folder: string, file: string): Promise<Uint8Array | null> {
+  if (useDb) {
+    const r = await one<{ data: Buffer }>("SELECT data FROM media_files WHERE path = ?", [`${folder}/${file}`]);
+    return r ? new Uint8Array(r.data) : null;
+  }
   if (useSupabase) {
     const r = await fetch(`${SB_URL}/storage/v1/object/${BUCKET}/${folder}/${file}`, { headers: { Authorization: `Bearer ${SB_KEY}` } });
     return r.ok ? new Uint8Array(await r.arrayBuffer()) : null;

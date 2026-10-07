@@ -42,4 +42,8 @@ next-env.d.ts
 storage/
 
 /deploy/
+
+.vercel
+.env*
 !.env.example
+PREVIEW-CREDENTIALS.local.txt
